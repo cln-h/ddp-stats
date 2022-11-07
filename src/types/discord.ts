@@ -11,8 +11,12 @@ export interface DiscordDataPackage {
 };
 
 export interface DiscordDataPackageAccount {
-    applications: DiscordDataPackageApplication[];
+    applications: DiscordDataPackageApplications;
 };
+
+export interface DiscordDataPackageApplications {
+    [key: string]: DiscordDataPackageApplication;
+}
 
 export interface DiscordDataPackageApplication {
     id: string;
@@ -57,7 +61,7 @@ export interface DiscordDataPackageActivity {
 };
 
 export interface DiscordDataPackageAnalytics {
-    event_entries: DiscordDataPackageAnalyticsEntry[];
+    [key: string]: DiscordDataPackageAnalyticsEntry;
 };
 
 export interface DiscordDataPackageAnalyticsEntry {
@@ -107,7 +111,7 @@ export interface DiscordDataPackageAnalyticsEvent {
 
 
 export interface DiscordDataPackageModeling { 
-    modeling_entries: DiscordDataPackageModelingEntry[];
+    [key: string]: DiscordDataPackageModelingEntry;
 };
 
 export interface DiscordDataPackageModelingEntry {
@@ -196,7 +200,7 @@ export interface DiscordDataPackageModelingEvent {
 }
 
 export interface DiscordDataPackageReporting { 
-    reporting_entries: DiscordDataPackageReportingEntry[];
+    [key: string]: DiscordDataPackageReportingEntry
 };
 
 export interface DiscordDataPackageReportingEntry {
@@ -278,7 +282,7 @@ export interface DiscordDataPackageReportingEvent {
 }
 
 export interface DiscordDataPackageTNS { 
-    tns_entries: DiscordDataPackageTNSEntry[];
+    [key: string]: DiscordDataPackageTNSEntry
 };
 
 export interface DiscordDataPackageTNSEntry{
@@ -328,7 +332,7 @@ export interface DiscordDataPackageTNSEvent {
 };
 
 export interface DiscordDataPackageMessages { 
-    records: DiscordDataPackageMessagesRecord[];
+    [key: string]: DiscordDataPackageMessagesRecord;
 };
 
 export interface DiscordDataPackageMessagesRecord {
