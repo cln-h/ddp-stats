@@ -2,36 +2,17 @@ import * as _ from 'lodash';
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import JSZip from 'jszip';
-import { DiscordDataPackage, DiscordDataPackageMessage } from '../types';
+import { DiscordDataPackage } from '../types';
 import { baseDiscordDataPackage } from '../utils';
 import { csvToObjArr } from '../utils/csv';
 import { LoadingSpinner } from './Loading';
 
-/** Keeping this here for now as an example */
-const handleOnDropExample = async (zippedFile: File) => {
-    const zip = await JSZip.loadAsync(zippedFile);
-    for (let zobj of Object.values(zip.files)) {
-        if (zobj.dir) continue;
-        if (zobj.name.slice(-4) !== '.csv' && zobj.name.slice(-5) !== '.json') continue;
-        const zblob = await zobj.async("blob");
-        const zfile = new File([zblob], zobj.name, {
-            lastModified: zobj.date.getTime(),
-            type: 'application/zip'
-        });
-        if (zfile.name.slice(-5) === '.json') {
-            const reader = new FileReader();
-            reader.onload = (evt) => { console.log('evt.target: ', evt.target?.result) };
-            reader.readAsText(zfile);
-        }
-    }
-}
-
 type Props = {
-    setDiscordData: React.Dispatch<React.SetStateAction<DiscordDataPackage>>;
+    setDataPackage: React.Dispatch<React.SetStateAction<DiscordDataPackage>>;
     setDataLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Dropzone: FunctionComponent<Props> = ({ setDiscordData, setDataLoaded }: Props) => {
+export const Dropzone: FunctionComponent<Props> = ({ setDataPackage, setDataLoaded }: Props) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const onDrop = useCallback((acceptedFiles: any) => {
@@ -68,30 +49,36 @@ export const Dropzone: FunctionComponent<Props> = ({ setDiscordData, setDataLoad
             if (fileType === 'csv') {
                 // parse csv
                 reader.onload = (evt) => { 
+                    const objPath = zPath.join('.').slice(0, -4);
                     const raw = evt.target?.result;
                     if (typeof raw !== 'string') {
                         console.error('Failed to parse csv. Exiting.')
                         return;
                     }
                     const arr = csvToObjArr(raw);
-                    switch (zPath[0]) {
-                        case ('messages'): {
-                            const path = 'messages.records.messages';
-                            const records: DiscordDataPackageMessage[] = _.get(dataPackage, path);
-                            _.set(dataPackage, path, records ? records.concat(arr) : arr)
-                            break;
-                        }
-                        default: {
-                            // Unhandled so skip
-                            break;
-                        }
-                    }
-                    // _.set(dataPackage, `${objectPath}.${key}_entries.${key}`, arr);
+                    const base = _.get(dataPackage, objPath) ?? []
+                    _.set(dataPackage, objPath, base.concat(arr));
                 }
                 reader.readAsText(zfile);
             } else {
                 // parse json
+                // json files are formatted as json line-by-line. Reading the full file would result in failure due to invalid json object
+                reader.onload = (evt) => {
+                    const objPath = zPath.join('.').slice(0, -5);
+                    const raw = evt.target?.result;
+                    if (typeof raw !== 'string') {
+                        console.error('Failed to parse json. Exiting.')
+                        return;
+                    }
+                    const jsonLines = raw.split('\n');
+                    jsonLines.map((line) => JSON.parse(line));
+                    const base = _.get(dataPackage, objPath) ?? 0;
+                    _.set(dataPackage, objPath, base.concat(jsonLines));
+                }
+                reader.readAsText(zfile);
             }
+            setDataPackage(dataPackage)
+            setDataLoaded(true);
         }
         console.log('dataPackage: ', dataPackage);
         setLoading(false);

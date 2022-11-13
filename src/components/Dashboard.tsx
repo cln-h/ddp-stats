@@ -7,11 +7,11 @@ type Props = {};
 
 export const Dashboard: FunctionComponent<Props> = (props: Props) => {
     const [dataLoaded, setDataLoaded] = useState<boolean>(false);
-    const [discordData, setDiscordData] = useState(baseDiscordDataPackage)
+    const [dataPackage, setDataPackage] = useState(baseDiscordDataPackage)
 
     return (
         <div>
-            <Dropzone setDataLoaded={setDataLoaded} setDiscordData={setDiscordData} />
+            <Dropzone setDataLoaded={setDataLoaded} setDataPackage={setDataPackage} />
         </div>
     )
 }
