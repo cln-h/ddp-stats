@@ -336,7 +336,7 @@ export interface DiscordDataPackageMessages {
 };
 
 export interface DiscordDataPackageMessagesRecord {
-    channel: { id: string, type: number };
+    channel: { id: string, type: number, recipients?: string[] };
     messages: DiscordDataPackageMessage[]
 };
 

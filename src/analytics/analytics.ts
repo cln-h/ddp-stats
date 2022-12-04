@@ -1,15 +1,18 @@
+import _ from "lodash";
 import { DiscordDataPackage } from "../types";
 
 /**
- * Count the total number of messages sent to a given user
+ * Count the total number of direct messages sent via direct messag
  * @param dataPackage Populated discord data package
  * @param userId userID of the target user
  * @returns 
  */ 
 const countDirectMessages = (dataPackage: DiscordDataPackage) => {
     let count = 0;
-    Object.keys(dataPackage.messages).forEach((messageStream) => {
-        count += Object.keys(messageStream).length;
+    Object.keys(dataPackage.messages).forEach((messageRecord) => {
+        // Get message stream from message record
+        const messages = _.get(dataPackage, `messages.${messageRecord}.messages`);
+        count += messages.length;
     });
     return count;
 }
@@ -18,6 +21,13 @@ const countDirectMessagesByUser = (dataPackage: DiscordDataPackage, targetUserId
     // Find channel.json with the targetUserId in the recipipients list.
     // Get related message stream id
     // Count the number of messages
+    Object.keys(dataPackage.messages).forEach((messageRecord) => {
+        const recipients = _.get(dataPackage, `messages.${messageRecord}.channel`).recipients;
+        if (recipients && recipients.includes(targetUserId)) {
+            return _.get(dataPackage, `messages.${messageRecord}.messages`).length;
+        }
+
+    })
 }
 
 const countGuildMessages = (dataPackage: DiscordDataPackage) => {};
