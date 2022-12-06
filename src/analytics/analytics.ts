@@ -7,57 +7,58 @@ import { DiscordDataPackage } from "../types";
  * @param userId userID of the target user
  * @returns 
  */ 
-const countDirectMessages = (dataPackage: DiscordDataPackage) => {
+export const countDirectMessages = (dataPackage: DiscordDataPackage) => {
     let count = 0;
     Object.keys(dataPackage.messages).forEach((messageRecord) => {
         // Get message stream from message record
-        const messages = _.get(dataPackage, `messages.${messageRecord}.messages`);
-        count += messages.length;
+        const channel = _.get(dataPackage, `messages.${messageRecord}.channel`);
+        if (channel.type === 1) {
+            const messages = _.get(dataPackage, `messages.${messageRecord}.messages`);
+            count += messages.length;
+        }
     });
     return count;
 }
 
-const countDirectMessagesByUser = (dataPackage: DiscordDataPackage, targetUserId: string) => {
-    // Find channel.json with the targetUserId in the recipipients list.
-    // Get related message stream id
-    // Count the number of messages
+export const countDirectMessagesByUser = (dataPackage: DiscordDataPackage, targetUserId: string) => {
     Object.keys(dataPackage.messages).forEach((messageRecord) => {
-        const recipients = _.get(dataPackage, `messages.${messageRecord}.channel`).recipients;
-        if (recipients && recipients.includes(targetUserId)) {
-            return _.get(dataPackage, `messages.${messageRecord}.messages`).length;
+        const channel = _.get(dataPackage, `messages.${messageRecord}.channel`);
+        if (channel.type === 1) {
+            if (channel.recipients && channel.recipients.includes(targetUserId)) {
+                return _.get(dataPackage, `messages.${messageRecord}.messages`).length;
+            }
         }
-
     })
 }
 
-const countGuildMessages = (dataPackage: DiscordDataPackage) => {};
+export const countGuildMessages = (dataPackage: DiscordDataPackage) => {};
 
-const countTotalMessages = (dataPackage: DiscordDataPackage) => {};
+export const countTotalMessages = (dataPackage: DiscordDataPackage) => {};
 
-const countCharactersSent = (dataPackage: DiscordDataPackage) => {}
+export const countCharactersSent = (dataPackage: DiscordDataPackage) => {}
 
 /** Retrieve two words sent most often. Remove transition words like `and` and `the` */
-const countFavoriteWords = (dataPackeage: DiscordDataPackage) => {};
+export const countFavoriteWords = (dataPackeage: DiscordDataPackage) => {};
 
 /**
  * Find the user that the client has sent the most messages to
  */
-const getFavoriteUser = (dataPackage: DiscordDataPackage) => {};
+export const getFavoriteUser = (dataPackage: DiscordDataPackage) => {};
 
-const countTimesClientOpened = (dataPackage: DiscordDataPackage) => {};
+export const countTimesClientOpened = (dataPackage: DiscordDataPackage) => {};
 
-const couuntNotificationsTouched = (dataPackage: DiscordDataPackage) => {};
+export const countNotificationsTouched = (dataPackage: DiscordDataPackage) => {};
 
-const getTotalSpent = (dataPackage: DiscordDataPackage) => {};
+export const getTotalSpent = (dataPackage: DiscordDataPackage) => {};
 
-const countVoiceChannelsJoined = (dataPackage: DiscordDataPackage) => {};
+export const countVoiceChannelsJoined = (dataPackage: DiscordDataPackage) => {};
 
-const countAcceptedCalls = (dataPackage: DiscordDataPackage) => {};
+export const countAcceptedCalls = (dataPackage: DiscordDataPackage) => {};
 
-const countOutgoingCalls = (dataPackage: DiscordDataPackage) => {};
+export const countOutgoingCalls = (dataPackage: DiscordDataPackage) => {};
 
-const countReactionsAdded = (dataPackage: DiscordDataPackage) => {};
+export const countReactionsAdded = (dataPackage: DiscordDataPackage) => {};
 
-const countTimesMentioned = (dataPackage: DiscordDataPackage) => {};
+export const countTimesMentioned = (dataPackage: DiscordDataPackage) => {};
 
-const countGuildsJoined = (dataPackage: DiscordDataPackage) => {};
+export const countGuildsJoined = (dataPackage: DiscordDataPackage) => {};

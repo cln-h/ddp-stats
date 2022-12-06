@@ -336,9 +336,22 @@ export interface DiscordDataPackageMessages {
 };
 
 export interface DiscordDataPackageMessagesRecord {
-    channel: { id: string, type: number, recipients?: string[] };
+    channel: DiscordDataPackageMessageChannelDM | DiscordDataPackageMessageChannelGuild;
     messages: DiscordDataPackageMessage[]
 };
+
+export interface DiscordDataPackageMessageChannelDM {
+    id: string,
+    type: 1,
+    recipients: string[],
+}
+
+export interface DiscordDataPackageMessageChannelGuild {
+    id: string;
+    type: 0;
+    name: string;
+    guild: DiscordDataPackageGuild;
+}
 
 export interface DiscordDataPackageMessage {
     ID: string;
@@ -357,6 +370,11 @@ export interface DiscordDataPackageServers {
 };
 
 export interface DiscordDataPackageGuildRecord {
-    guild: { id: string; name: string; };
+    guild: DiscordDataPackageGuild;
     "audit-log": any[];
 };
+
+export interface DiscordDataPackageGuild {
+    id: string;
+    name: string;
+}
