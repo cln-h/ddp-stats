@@ -52,7 +52,16 @@ export const countTotalMessages = (dataPackage: DiscordDataPackage) => {
     return count;
 };
 
-export const countCharactersSent = (dataPackage: DiscordDataPackage) => {};
+export const countCharactersSent = (dataPackage: DiscordDataPackage) => {
+    let count = 0;
+    Object.keys(dataPackage.messages).forEach((messageRecord) => {
+        const messages = _.get(dataPackage, `messages.${messageRecord}.messages`);
+        count = messages.reduce((acc, msg) => {
+            return acc += msg.Contents.length;
+        }, 0)
+    });
+    return count;
+};
 
 /** Retrieve two words sent most often. Remove transition words like `and` and `the` */
 export const getFavoriteWord = (dataPackeage: DiscordDataPackage) => {};
