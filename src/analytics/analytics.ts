@@ -28,17 +28,34 @@ export const countDirectMessagesByUser = (dataPackage: DiscordDataPackage, targe
                 return _.get(dataPackage, `messages.${messageRecord}.messages`).length;
             }
         }
-    })
+    });
 }
 
-export const countGuildMessages = (dataPackage: DiscordDataPackage) => {};
+export const countGuildMessages = (dataPackage: DiscordDataPackage) => {
+    let count = 0;
+    Object.keys(dataPackage.messages).forEach((messageRecord) => {
+        const channel = _.get(dataPackage, `messages.${messageRecord}.channel`);
+        if (channel.type == 0) { // TODO: Ensure type is 0
+            const messages = _.get(dataPackage, `messages.${messageRecord}.messages`);
+            count += messages.length;
+        }
+    });
+    return count;
+};
 
-export const countTotalMessages = (dataPackage: DiscordDataPackage) => {};
+export const countTotalMessages = (dataPackage: DiscordDataPackage) => {
+    let count = 0;
+    Object.keys(dataPackage.messages).forEach((messageRecord) => {
+        const messages = _.get(dataPackage, `messages.${messageRecord}.messages`);
+        count += messages.length;
+    });
+    return count;
+};
 
-export const countCharactersSent = (dataPackage: DiscordDataPackage) => {}
+export const countCharactersSent = (dataPackage: DiscordDataPackage) => {};
 
 /** Retrieve two words sent most often. Remove transition words like `and` and `the` */
-export const countFavoriteWords = (dataPackeage: DiscordDataPackage) => {};
+export const getFavoriteWord = (dataPackeage: DiscordDataPackage) => {};
 
 /**
  * Find the user that the client has sent the most messages to
