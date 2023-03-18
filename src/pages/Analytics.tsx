@@ -1,9 +1,9 @@
-import React from 'react'
-import { DiscordDataPackage } from '../types'
+import React from 'react';
+import { DiscordDataPackage } from '../types';
 
 type Props = {
-  dataPackage: DiscordDataPackage
-}
+  dataPackage: DiscordDataPackage;
+};
 
 export const Analytics: React.FunctionComponent<Props> = ({
   dataPackage,
@@ -12,5 +12,5 @@ export const Analytics: React.FunctionComponent<Props> = ({
     <div>
       <h1>Analytics</h1>
     </div>
-  )
-}
+  );
+};
