@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import JSZip from 'jszip';
 import { DiscordDataPackage } from '../types';
-import { baseDiscordDataPackage } from '../utils';
+import { discordDataPackageTemplate } from '../utils';
 import { csvToObjArr } from '../utils/csv';
 import { LoadingSpinner } from './Loading';
 
@@ -12,10 +12,10 @@ type Props = {
     setDataLoaded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Dropzone: FunctionComponent<Props> = ({ setDataPackage, setDataLoaded }: Props) => {
-    const [loading, setLoading] = useState<boolean>(false);
+export const Dropzone: React.FunctionComponent<Props> = ({ setDataPackage, setDataLoaded }: Props) => {
+    const [loading, setLoading] = React.useState<boolean>(false);
 
-    const onDrop = useCallback((acceptedFiles: any) => {
+    const onDrop = React.useCallback((acceptedFiles: any) => {
         acceptedFiles.forEach((file: any) => {
             const reader = new FileReader();
 
@@ -31,7 +31,7 @@ export const Dropzone: FunctionComponent<Props> = ({ setDataPackage, setDataLoad
     // TODO: Image Parsing for icons?
     const handleOnDrop = async (zippedFile: File) => {
         setLoading(true);
-        const dataPackage: DiscordDataPackage = baseDiscordDataPackage;
+        const dataPackage: DiscordDataPackage = discordDataPackageTemplate;
 
         const zip = await JSZip.loadAsync(zippedFile);
         for (let zobj of Object.values(zip.files)) {
@@ -90,5 +90,5 @@ export const Dropzone: FunctionComponent<Props> = ({ setDataPackage, setDataLoad
             <p>Drop your file or here or click to browse</p>
             {loading && <LoadingSpinner />}
         </div>
-    )
+    );
 }

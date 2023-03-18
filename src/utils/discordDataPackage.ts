@@ -1,7 +1,7 @@
 import { DiscordDataPackage } from "../types";
 
 // TODO: Populate this
-export const baseDiscordDataPackage = {
+export const discordDataPackageTemplate = {
     account: {
         applications: {},
     },
