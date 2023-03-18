@@ -64,7 +64,7 @@ export const countCharactersSent = (dataPackage: DiscordDataPackage) => {
 };
 
 /** Retrieve two words sent most often. Remove transition words like `and` and `the` */
-export const getFavoriteWord = (dataPackeage: DiscordDataPackage) => {};
+export const getFavoriteWord = (dataPackage: DiscordDataPackage) => {};
 
 /**
  * Find the user that the client has sent the most messages to
