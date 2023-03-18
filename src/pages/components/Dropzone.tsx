@@ -15,7 +15,7 @@ type Props = {
 export const Dropzone: React.FunctionComponent<Props> = ({
   setDataPackage,
   setDataLoaded,
-}: Props) => {
+}) => {
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const onDrop = React.useCallback((acceptedFiles: any) => {

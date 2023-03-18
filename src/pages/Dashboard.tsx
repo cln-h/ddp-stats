@@ -1,13 +1,11 @@
-import React, { FunctionComponent, useState } from 'react';
+import React from 'react';
 import { DiscordDataPackage } from '../types';
 import { discordDataPackageTemplate } from '../utils';
 import { Dropzone } from './components/Dropzone';
 
-type Props = {};
-
-export const Dashboard: FunctionComponent<Props> = (props: Props) => {
-  const [dataLoaded, setDataLoaded] = useState<boolean>(false);
-  const [dataPackage, setDataPackage] = useState(discordDataPackageTemplate);
+export const Dashboard: React.FunctionComponent = () => {
+  const [dataLoaded, setDataLoaded] = React.useState<boolean>(false);
+  const [dataPackage, setDataPackage] = React.useState<DiscordDataPackage>(discordDataPackageTemplate);
 
   return (
     <div>

@@ -7,7 +7,7 @@ type Props = {
 
 export const Analytics: React.FunctionComponent<Props> = ({
   dataPackage,
-}: Props) => {
+}) => {
   return (
     <div>
       <h1>Analytics</h1>
