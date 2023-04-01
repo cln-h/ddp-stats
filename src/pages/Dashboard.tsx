@@ -1,6 +1,7 @@
 import React from 'react';
 import { DiscordDataPackage } from '../types';
 import { discordDataPackageTemplate } from '../utils';
+import { Analytics } from './Analytics';
 import { Dropzone } from './components/Dropzone';
 
 export const Dashboard: React.FunctionComponent = () => {
@@ -9,7 +10,8 @@ export const Dashboard: React.FunctionComponent = () => {
 
   return (
     <div>
-      <Dropzone setDataLoaded={setDataLoaded} setDataPackage={setDataPackage} />
+      {/* <Dropzone setDataLoaded={setDataLoaded} setDataPackage={setDataPackage} /> */}
+      <Analytics dataPackage={discordDataPackageTemplate} />
     </div>
   );
 };

@@ -2,9 +2,9 @@ import * as _ from 'lodash';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import JSZip from 'jszip';
-import { DiscordDataPackage } from '../../types';
-import { discordDataPackageTemplate } from '../../utils';
-import { csvToObjArr } from '../../utils/csv';
+import { DiscordDataPackage } from '@types';
+import { discordDataPackageTemplate } from '@utils';
+import { csvToObjArr } from '@utils';
 import { LoadingSpinner } from './Loading';
 
 type Props = {

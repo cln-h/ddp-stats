@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DiscordDataPackage } from '../types';
+import { DiscordDataPackage, GenericObject } from '../../types';
 
 /**
  * Count the total number of direct messages sent via direct messag
@@ -68,18 +68,49 @@ export const countCharactersSent = (dataPackage: DiscordDataPackage) => {
 };
 
 /** Retrieve two words sent most often. Remove transition words like `and` and `the` */
-export const getFavoriteWord = (dataPackage: DiscordDataPackage) => {};
+export const getFavoriteWord = (dataPackage: DiscordDataPackage) => {
+  const wordCount: GenericObject = {};
+  Object.keys(dataPackage.messages).forEach(messageRecord => {
+    const messages = _.get(dataPackage, `messages.${messageRecord}.messages`);
+    messages.forEach(message => {
+      const words = message.Contents.split(' ');
+      words.forEach(word => {
+        if (wordCount[word]) {
+          wordCount[word] += 1;
+        } else {
+          wordCount[word] = 1;
+        }
+      });
+    });
+  });
+  return Object.keys(wordCount).reduce((a, b) =>
+    wordCount[a] > wordCount[b] ? a : b,
+  );
+};
 
 /**
  * Find the user that the client has sent the most messages to
  */
-export const getFavoriteUser = (dataPackage: DiscordDataPackage) => {};
+export const getFavoriteUser = (dataPackage: DiscordDataPackage) => {
+  // TODO: This is a duplicate of countDirectMessagesByUser - refactor to use that function
+  // TODO: Also, ensure this works
+  const userCount: GenericObject = {};
+  Object.keys(dataPackage.messages).forEach(messageRecord => {
+    const channel = _.get(dataPackage, `messages.${messageRecord}.channel`);
+    if (channel.type === 1) {
+      const messages = _.get(dataPackage, `messages.${messageRecord}.messages`);
+      const userId = _.get(dataPackage, `messages.${messageRecord}.channel.id`);
+      userCount[userId] = messages.length;
+    }
+  });
+  return Object.keys(userCount).reduce((a, b) =>
+    userCount[a] > userCount[b] ? a : b,
+  );
+};
 
 export const countTimesClientOpened = (dataPackage: DiscordDataPackage) => {};
 
-export const countNotificationsTouched = (
-  dataPackage: DiscordDataPackage,
-) => {};
+export const countNotificationsTouched = (dataPackage: DiscordDataPackage) => {};
 
 export const getTotalSpent = (dataPackage: DiscordDataPackage) => {};
 
@@ -94,3 +125,5 @@ export const countReactionsAdded = (dataPackage: DiscordDataPackage) => {};
 export const countTimesMentioned = (dataPackage: DiscordDataPackage) => {};
 
 export const countGuildsJoined = (dataPackage: DiscordDataPackage) => {};
+
+export const getMostUsedEmoji = (dataPackage: DiscordDataPackage) => {};
