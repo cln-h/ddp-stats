@@ -56,6 +56,22 @@ export const countTotalMessages = (dataPackage: DiscordDataPackage) => {
   return count;
 };
 
+/**
+ * Counts total messages using events instead of saved messages
+ * @param dataPackage 
+ */
+export const countMessagesSent = (dataPackage: DiscordDataPackage) => {
+  let counter = 0;
+
+  Object.entries(dataPackage.activity.analytics).forEach(([key, value]) => {
+    for (const event of value.events) {
+      if (event.event_type === "sendMessage") counter++;
+    }
+  });
+
+  return counter;
+}
+
 export const countCharactersSent = (dataPackage: DiscordDataPackage) => {
   let count = 0;
   Object.keys(dataPackage.messages).forEach(messageRecord => {
