@@ -61,15 +61,7 @@ export const countTotalMessages = (dataPackage: DiscordDataPackage) => {
  * @param dataPackage 
  */
 export const countMessagesSent = (dataPackage: DiscordDataPackage) => {
-  let counter = 0;
-
-  Object.entries(dataPackage.activity.analytics).forEach(([key, value]) => {
-    for (const event of value.events) {
-      if (event.event_type === "sendMessage") counter++;
-    }
-  });
-
-  return counter;
+  countEvents(dataPackage, "messageSent");
 }
 
 export const countCharactersSent = (dataPackage: DiscordDataPackage) => {
@@ -124,7 +116,17 @@ export const getFavoriteUser = (dataPackage: DiscordDataPackage) => {
   );
 };
 
-export const countTimesClientOpened = (dataPackage: DiscordDataPackage) => {};
+export const countTimesClientOpened = (dataPackage: DiscordDataPackage) => {
+  let counter = 0;
+
+  Object.entries(dataPackage.activity.analytics).forEach(([key, value]) => {
+    for (const event of value.events) {
+      if (event.event_type === "appOpened") counter++;
+    }
+  });
+
+  return counter;
+};
 
 export const countNotificationsTouched = (dataPackage: DiscordDataPackage) => {};
 
@@ -143,3 +145,15 @@ export const countTimesMentioned = (dataPackage: DiscordDataPackage) => {};
 export const countGuildsJoined = (dataPackage: DiscordDataPackage) => {};
 
 export const getMostUsedEmoji = (dataPackage: DiscordDataPackage) => {};
+
+export const countEvents = (dataPackage: DiscordDataPackage, eventName: string) => {
+  let counter = 0;
+
+  Object.entries(dataPackage.activity.analytics).forEach(([key, value]) => {
+    for (const event of value.events) {
+      if (event.event_type === eventName) counter++;
+    }
+  });
+
+  return counter;
+};
